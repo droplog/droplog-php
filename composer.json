@@ -1,0 +1,22 @@
+{
+  "name": "droplog/droplog",
+  "description": "Official PHP SDK for Droplog — audit log infrastructure for SaaS",
+  "version": "0.1.0",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mario Coulombe",
+      "email": "mario.coulombe@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=8.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "Droplog\\": "src/"
+    }
+  },
+  "homepage": "https://droplog.dev"
+}
