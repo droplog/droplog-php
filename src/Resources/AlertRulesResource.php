@@ -13,13 +13,18 @@ class AlertRulesResource
         return $this->client->request('GET', '/v1/alert-rules');
     }
 
-    public function create(string $actionPattern): array
+    /**
+     * @param array{action_pattern: string} $params
+     */
+    public function create(array $params): array
     {
-        return $this->client->request('POST', '/v1/alert-rules', body: ['action_pattern' => $actionPattern]);
+        return $this->client->request('POST', '/v1/alert-rules', body: $params);
     }
 
-    public function delete(string $ruleId): void
+    public function delete(string $ruleId): bool
     {
         $this->client->request('DELETE', "/v1/alert-rules/{$ruleId}");
+
+        return true;
     }
 }

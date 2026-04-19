@@ -8,11 +8,13 @@ use Droplog\Resources\ViewersResource;
 
 class Droplog
 {
-    public const VERSION = '0.1.0';
+    public const VERSION = '0.1.2';
     private const DEFAULT_BASE_URL = 'https://api.droplog.dev';
+    private const DEFAULT_TIMEOUT = 30;
 
     private string $apiKey;
     private string $baseUrl;
+    private int $timeout;
 
     public readonly EventsResource $events;
     public readonly ViewersResource $viewers;
@@ -30,6 +32,7 @@ class Droplog
 
         $this->apiKey = $apiKey;
         $this->baseUrl = rtrim($options['base_url'] ?? self::DEFAULT_BASE_URL, '/');
+        $this->timeout = $options['timeout'] ?? self::DEFAULT_TIMEOUT;
 
         $this->events = new EventsResource($this);
         $this->viewers = new ViewersResource($this);
@@ -86,13 +89,15 @@ class Droplog
         $ch = curl_init($url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
 
         if ($method === 'POST') {
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($body, JSON_THROW_ON_ERROR));
         } elseif ($method === 'DELETE') {
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'DELETE');
+        } else {
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
         }
 
         $response = curl_exec($ch);

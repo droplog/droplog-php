@@ -23,8 +23,10 @@ class ViewersResource
         return $this->client->request('GET', '/v1/viewer-sessions');
     }
 
-    public function delete(string $sessionId): void
+    public function delete(string $sessionId): bool
     {
         $this->client->request('DELETE', "/v1/viewer-sessions/{$sessionId}");
+
+        return true;
     }
 }
